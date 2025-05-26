@@ -1,3 +1,6 @@
+
+![Screenshot](./assets/chat-screenshot.png)
+
 # What is this?
 
 This is a chatbot which is a wrapper to OpenAI and SerpAPI.  SerpAPI is a google search API.  OpenAI is a chatGPT API. They are used together so that the web is used when fetching information.
