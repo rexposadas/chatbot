@@ -1,7 +1,6 @@
-# Sports Stats API with Google Search via SerpAPI
+# What is this?
 
-An AI-powered sports statistics API that combines OpenAI's GPT models with real-time Google search results via SerpAPI to provide accurate, up-to-date sports information with reliable sources.
-
+This is a chatbot which is a wrapper to OpenAI and SerpAPI.  SerpAPI is a google search API.  OpenAI is a chatGPT API. They are used together so that the web is used when fetching information.
 
 
 ## getting started
@@ -10,16 +9,10 @@ in one terminal: `npm run dev`  -> starts the service
 
 in another terminal: `open public/index.html`  -> run the FE
 
-currently, we are limited to 100 search hits by SERPAPI - a google web service: https://serpapi.com/manage-api-key
-
-FYI: Brave has a free account, but need to give your CC, and it has 1,000 free hits per month
-
 ## Features
 
 - **AI-Powered Responses**: Uses OpenAI GPT-4 for intelligent sports statistics analysis
 - **Google Search Integration**: Uses SerpAPI to access Google search results in real-time
-- **Sports-Focused Filtering**: Prioritizes results from ESPN, NBA.com, NFL.com, MLB.com, etc.
-- **Source Citations**: Provides verifiable Google search result sources
 - **TypeScript**: Fully typed for better development experience
 
 ## Why SerpAPI?
@@ -40,7 +33,7 @@ SerpAPI provides access to Google search results via API, giving you:
 ### 2. Configure Your Environment
 ```bash
 # Clone and install
-cd /Users/rex/work/rexposadas/draft-copilot
+cd /Users/rex/work/rexposadas/chatbot
 npm install
 
 # Configure .env file
@@ -58,7 +51,7 @@ npm run dev
 
 ### Get Sports Statistics with Google Search
 ```bash
-POST /api/sports-stats
+POST /api/chat
 Content-Type: application/json
 
 {
@@ -185,7 +178,7 @@ The API gracefully handles:
 
 2. **Test Full Pipeline**:
    ```bash
-   curl -X POST http://localhost:3000/api/sports-stats \
+   curl -X POST http://localhost:3000/api/chat \
      -H "Content-Type: application/json" \
      -d '{"question": "Who won the most recent Super Bowl?"}'
    ```

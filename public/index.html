@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Stats AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .input-section {
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        #questionInput {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        #questionInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #askButton {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        #askButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        #askButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-section {
+            margin-top: 32px;
+        }
+
+        .response-section h2 {
+            color: #2c3e50;
+            margin-bottom: 16px;
+            font-size: 1.4rem;
+        }
+
+        #responseContainer {
+            min-height: 60px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .loading::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ddd;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .answer {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .answer h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .answer p {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .sources {
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .sources h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .sources ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sources li {
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #28a745;
+        }
+
+        .sources a {
+            color: #0066cc;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Chatbot</h1>
+            <p>Ask questions and get AI-powered answers with sources</p>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="questionInput">Enter question here:</label>
+                    <textarea
+                        id="questionInput"
+                        placeholder="e.g., Who won the 2024 NBA Finals?"
+                    ></textarea>
+                </div>
+                <button id="askButton" onclick="askQuestion()">Ask Question</button>
+            </div>
+
+            <div class="response-section">
+                <h2>Response</h2>
+                <div id="responseContainer">
+                    <div class="empty-state">
+                        Ask a question to see the AI response here
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+
+        async function askQuestion() {
+            const questionInput = document.getElementById('questionInput');
+            const responseContainer = document.getElementById('responseContainer');
+            const askButton = document.getElementById('askButton');
+
+            const question = questionInput.value.trim();
+
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+
+            // Show loading state
+            askButton.disabled = true;
+            askButton.textContent = 'Getting Answer...';
+            responseContainer.innerHTML = '<div class="loading">Processing your question...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to get response');
+                }
+
+                displayResponse(data);
+
+            } catch (error) {
+                console.error('Error:', error);
+                responseContainer.innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message}
+                        <br><br>
+                        <small>Make sure the backend server is running on port 3000 and your OpenAI API key is configured.</small>
+                    </div>
+                `;
+            } finally {
+                // Reset button state
+                askButton.disabled = false;
+                askButton.textContent = 'Ask Question';
+            }
+        }
+
+        function displayResponse(data) {
+            const responseContainer = document.getElementById('responseContainer');
+
+            let html = `
+                <div class="answer">
+                    <h3>🎯 Answer</h3>
+                    <p>${escapeHtml(data.answer)}</p>
+                </div>
+            `;
+
+            if (data.sources && data.sources.length > 0) {
+                html += `
+                    <div class="sources">
+                        <h3>📋 Sources</h3>
+                        <ul>
+                `;
+
+                data.sources.forEach(source => {
+                    // Handle new object format: {title: string, url: string}
+                    if (typeof source === 'object' && source.url) {
+                        html += `<li><a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.title)}</a></li>`;
+                    } else if (typeof source === 'string') {
+                        // Fallback for old string format
+                        if (source.startsWith('http')) {
+                            html += `<li><a href="${escapeHtml(source)}" target="_blank">${escapeHtml(source)}</a></li>`;
+                        } else {
+                            // Extract URL if it's embedded in text
+                            const urlMatch = source.match(/(https?:\/\/[^\s]+)/);
+                            if (urlMatch) {
+                                const url = urlMatch[1];
+                                const description = source.replace(url, '').trim();
+                                html += `<li><a href="${escapeHtml(url)}" target="_blank">${escapeHtml(description || url)}</a></li>`;
+                            } else {
+                                html += `<li>${escapeHtml(source)}</li>`;
+                            }
+                        }
+                    }
+                });
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+
+            responseContainer.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Allow Enter key to submit (Ctrl/Cmd + Enter for new line)
+        document.getElementById('questionInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) {
+                e.preventDefault();
+                askQuestion();
+            }
+        });
+    </script>
+</body>
+</html>

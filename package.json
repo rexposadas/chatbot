@@ -1,0 +1,39 @@
+{
+  "name": "chat-api",
+  "version": "1.0.0",
+  "description": "AI-powered sports statistics API with web search",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "watch": "ts-node --watch src/server.ts",
+    "test-serpapi": "node test-serpapi.js",
+    "test-parsing": "node test-parsing.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "node-fetch": "^2.7.0",
+    "openai": "^4.102.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^4.17.22",
+    "@types/node": "^20.17.50",
+    "@types/node-fetch": "^2.6.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "keywords": [
+    "sports",
+    "statistics",
+    "ai",
+    "openai",
+    "web-search",
+    "api"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
