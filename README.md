@@ -3,11 +3,7 @@
 
 # What is this?
 
-This is a chatbot which is a wrapper to OpenAI and SerpAPI.  This provides answers **and sources**.
-
-
-
-SerpAPI is a google search API.  OpenAI is a chatGPT API. They are used together so that the web is used when fetching information.
+This chatbot acts as a wrapper around OpenAI and SerpAPI, providing both answers and their sources. SerpAPI is a Google Search API, while OpenAI powers the ChatGPT API. Together, they enable the chatbot to retrieve up-to-date web information and generate informative responses.
 
 
 ## getting started
